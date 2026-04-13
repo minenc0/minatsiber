@@ -280,9 +280,93 @@
         }
 
         // Load data saat halaman dibuka
-        $(document).ready(function() {
-            loadData();
-        });
+<script>
+const API_URL = 'https://script.google.com/macros/s/AKfycbww9XCg-0pv9uzuFdRi5ks0jeSWxxM-ULJCy9dmYSPenvOC7l1IehOHaqWBjZ2PgPL7YQ/exec';
+
+function loadData() {
+    $('#loading').show();
+    $('#error').hide();
+    $('#tableContainer').hide();
+    
+    if (window.dataTable) {
+        window.dataTable.destroy();
+        $('#tableBody').empty();
+    }
+    
+    // Gunakan JSONP untuk hindari CORS
+    const script = document.createElement('script');
+    const callbackName = 'handleData_' + Date.now();
+    
+    window[callbackName] = function(data) {
+        // Cleanup
+        delete window[callbackName];
+        document.head.removeChild(script);
+        
+        processData(data);
+    };
+    
+    script.src = API_URL + '?callback=' + callbackName + '&t=' + Date.now();
+    script.onerror = function() {
+        $('#loading').hide();
+        $('#error').text('Gagal terhubung ke server').show();
+        delete window[callbackName];
+    };
+    
+    document.head.appendChild(script);
+}
+
+function processData(data) {
+    $('#loading').hide();
+    
+    if (data.error) {
+        $('#error').text('Error: ' + data.error).show();
+        return;
+    }
+    
+    if (!data.length) {
+        $('#error').text('Data kosong').show();
+        return;
+    }
+    
+    // Isi tabel...
+    const tbody = document.getElementById('tableBody');
+    tbody.innerHTML = '';
+    
+    data.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${escapeHtml(row.nama)}</td>
+            <td>${escapeHtml(row.pangkat)}</td>
+            <td>${escapeHtml(row.no_ak)}</td>
+            <td>${row.nilai}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+    
+    $('#tableContainer').show();
+    window.dataTable = $('#reportTable').DataTable({
+        pageLength: 10,
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Semua"]],
+        order: [[3, 'desc']],
+        language: {
+            search: "Cari:",
+            lengthMenu: "Tampilkan _MENU_ data",
+            info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data"
+        }
+    });
+}
+
+function escapeHtml(text) {
+    if (!text) return '';
+    return text.replace(/&/g, "&amp;")
+               .replace(/</g, "&lt;")
+               .replace(/>/g, "&gt;")
+               .replace(/"/g, "&quot;")
+               .replace(/'/g, "&#039;");
+}
+
+$(document).ready(loadData);
+</script>
     </script>
 </body>
 </html>
