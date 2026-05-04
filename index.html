@@ -168,10 +168,10 @@
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script>
         // URL Published Spreadsheet (CSV format - lebih reliable)
-        const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRkACgwr_vGXy-nz4ZjpME8FxVh8Pld8wg4bOMdyIobI8R79k1vns3rSZC-4j93ZC1-BT0MwvgFg2ra/pub?gid=0&single=true&output=csv';
+        const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTSWOELpU7Ok52a7KX6bcK-8ysvbvA89N-63rMdgGQcNrl1-TfiI9VFI3fUkvDM7JWZ-KWJ38cr9jJT/pub?gid=0&single=true&output=csv';
         
         // Fallback: URL Published HTML (untuk parsing manual jika CSV gagal)
-        const SHEET_HTML_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRkACgwr_vGXy-nz4ZjpME8FxVh8Pld8wg4bOMdyIobI8R79k1vns3rSZC-4j93ZC1-BT0MwvgFg2ra/pubhtml?gid=0&single=true';
+        const SHEET_HTML_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTSWOELpU7Ok52a7KX6bcK-8ysvbvA89N-63rMdgGQcNrl1-TfiI9VFI3fUkvDM7JWZ-KWJ38cr9jJT/pubhtml?gid=0&single=true';
         
         let dataTable = null;
 
@@ -239,7 +239,7 @@
                 const nama = cols[1];
                 const no_ak = cols[2];
                 const pangkat = cols[3];
-                const nilai_total = cols[14];
+                const nilai_total = cols[69];
                 
                 if (nama && nama.trim() !== '' && nama !== 'Nama') {
                     result.push({
